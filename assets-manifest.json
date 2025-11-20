@@ -1,0 +1,26 @@
+[
+	{
+		"url": "https://res.cloudinary.com/dsx4wpe0o/image/upload/v1763658128/favicon_efeo1m.ico",
+		"dest": "src/app/favicon.ico",
+		"frameworks": ["next.js"],
+		"description": "Replace url/dest with your favicon details."
+	},
+	{
+		"url": "https://res.cloudinary.com/dsx4wpe0o/image/upload/v1763665613/favicon-32x32_qazpb1.png",
+		"dest": "public/favicon.png",
+		"frameworks": ["react"],
+		"description": "React-specific favicon example that mirrors the Next.js entry."
+	},
+	{
+		"url": "https://res.cloudinary.com/dsx4wpe0o/image/upload/v1763655049/workmark_pf7umw.png",
+		"dest": "public/wordmark.png",
+		"frameworks": ["next.js", "react"],
+		"description": "Example hero image entry."
+	},
+	{
+		"url": "https://www.veridiandevs.tech/assets/Urbanist-Regular-tI3pXo7g.woff",
+		"dest": "public/Urbanist-Regular.woff",
+		"frameworks": ["next.js", "react"],
+		"description": "Example hero image entry."
+	}
+]

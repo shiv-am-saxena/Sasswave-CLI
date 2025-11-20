@@ -1,0 +1,28 @@
+# Dependencies
+/node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Build artifacts
+/dist/
+/out/
+.next/
+
+# Environment / lock-in
+.env*
+*.local
+
+# Misc
+/tmp/
+coverage/
