@@ -1,0 +1,71 @@
+name: Release & Publish (Unified)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  release_and_publish:
+    runs-on: ubuntu-latest
+    environment: npm
+
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          always-auth: true
+
+      # ----------------------------------------
+      # 1) Run release-please (version + changelog + release)
+      # ----------------------------------------
+      - id: release
+        name: Run release-please
+        uses: google-github-actions/release-please-action@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          package-name: "sasswave"
+          bump-minor-pre-major: true
+
+      # If no new release was created, stop here.
+      - name: Stop if no new release created
+        if: ${{ steps.release.outputs.release_created != 'true' }}
+        run: echo "No new release; skipping publish."
+
+      # ----------------------------------------
+      # 2) Only continue if release was created
+      # ----------------------------------------
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: npm ci
+
+      - name: Run unit tests
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: npm test
+
+      - name: Run smoke tests
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: node scripts/smoke-test.js
+
+      # ----------------------------------------
+      # 3) Publish to npm using OIDC
+      # ----------------------------------------
+      - name: Publish to npm via OIDC
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: npm publish --provenance --access public
