@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/shiv-am-saxena/Sasswave-CLI/compare/v1.0.0...v1.1.0) (2025-11-20)
+
+
+### Features
+
+* add sasswave-1.0.0.tgz package ([a1dfd0c](https://github.com/shiv-am-saxena/Sasswave-CLI/commit/a1dfd0c974e7534a8f16ce3fc73292ad04015bea))
+
 ## 1.0.0 (2025-11-20)
 
 
