@@ -12,11 +12,13 @@ jobs:
     environment: npm
 
     permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      id-token: write
-      packages: write
+      contents: write          # required for committing version bumps + changelog
+      pull-requests: write     # required for creating release PRs
+      issues: write            # required for annotating issues in release-please
+      id-token: write          # REQUIRED for npm OIDC publish
+      packages: write          # REQUIRED for publishing packages
+      checks: write            # optional but recommended for test reporting
+      deployments: write       # optional but recommended for future integrations
 
     steps:
       - name: Checkout
@@ -31,9 +33,9 @@ jobs:
           registry-url: https://registry.npmjs.org
           always-auth: true
 
-      # ----------------------------------------
-      # 1) Run release-please (version + changelog + release)
-      # ----------------------------------------
+      # ---------------------------
+      # 1) Run release-please
+      # ---------------------------
       - id: release
         name: Run release-please
         uses: google-github-actions/release-please-action@v3
@@ -43,14 +45,13 @@ jobs:
           package-name: "sasswave"
           bump-minor-pre-major: true
 
-      # If no new release was created, stop here.
       - name: Stop if no new release created
         if: ${{ steps.release.outputs.release_created != 'true' }}
-        run: echo "No new release; skipping publish."
+        run: echo "No release created. Skipping publish."
 
-      # ----------------------------------------
-      # 2) Only continue if release was created
-      # ----------------------------------------
+      # ---------------------------
+      # 2) If release created → test + publish
+      # ---------------------------
       - name: Install dependencies
         if: ${{ steps.release.outputs.release_created == 'true' }}
         run: npm ci
@@ -63,9 +64,9 @@ jobs:
         if: ${{ steps.release.outputs.release_created == 'true' }}
         run: node scripts/smoke-test.js
 
-      # ----------------------------------------
-      # 3) Publish to npm using OIDC
-      # ----------------------------------------
+      # ---------------------------
+      # 3) Publish to npm via OIDC
+      # ---------------------------
       - name: Publish to npm via OIDC
         if: ${{ steps.release.outputs.release_created == 'true' }}
         run: npm publish --provenance --access public
