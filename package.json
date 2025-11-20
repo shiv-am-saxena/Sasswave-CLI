@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "dev": "node bin/sasswave-create.js",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "keywords": [
     "sass",
@@ -44,5 +45,8 @@
     "enquirer": "^2.4.1",
     "execa": "^9.6.0",
     "fs-extra": "^11.3.2"
+  },
+  "devDependencies": {
+    "conventional-changelog-cli": "^4.0.0"
   }
 }
