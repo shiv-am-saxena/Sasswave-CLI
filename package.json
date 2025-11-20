@@ -6,8 +6,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "bin": {
-    "sasswave-create": "./bin/sasswave-create.js",
-    "create-sasswave-app": "./bin/sasswave-create.js"
+    "sasswave": "./bin/sasswave-create.js"
   },
   "files": [
     "bin",
