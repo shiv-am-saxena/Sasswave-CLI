@@ -1,5 +1,14 @@
 # Dependencies
 /node_modules/
+/bun.lockb
+
+# Bun runtime cache
+/.bun/
+
+# Package manager artifacts
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
 
 # Logs
 npm-debug.log*
@@ -18,11 +27,21 @@ lerna-debug.log*
 /dist/
 /out/
 .next/
+.turbo/
+.vercel/
+
+# Coverage / reports
+coverage/
+lcov.info
+*.lcov
+
+# Temporary data
+/tmp/
+.cache/
+*.tmp
 
 # Environment / lock-in
 .env*
 *.local
 
 # Misc
-/tmp/
-coverage/
