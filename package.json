@@ -1,14 +1,43 @@
 {
   "name": "sasswave",
   "version": "0.1.0",
+  "description": "Zero-config CLI to scaffold SassWave-ready React or Next.js apps.",
   "private": false,
   "type": "module",
+  "license": "UNLICENSED",
   "bin": {
-    "create-sasswave-app": "./sasswave-create-cli.js"
+    "sasswave-create": "./bin/sasswave-create.js",
+    "create-sasswave-app": "./bin/sasswave-create.js"
   },
+  "files": [
+    "bin",
+    "src",
+    "assets-manifest.json",
+    "docs",
+    "README.md"
+  ],
   "scripts": {
-    "dev": "node sasswave-create-cli.js",
+    "dev": "node bin/sasswave-create.js",
     "test": "node --test tests/*.test.js"
+  },
+  "keywords": [
+    "sass",
+    "nextjs",
+    "react",
+    "vite",
+    "cli",
+    "scaffolding"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shiv-am-saxena/Sasswave-CLI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shiv-am-saxena/Sasswave-CLI/issues"
+  },
+  "homepage": "https://github.com/shiv-am-saxena/Sasswave-CLI#readme",
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "chalk": "^5.3.0",
