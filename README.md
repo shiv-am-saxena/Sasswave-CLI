@@ -1,54 +1,29 @@
 # SassWave Create CLI
 
-A small CLI to scaffold a SassWave-ready frontend project.
+`sasswave-create` is a zero-config scaffolding tool that spins up SassWave-branded React or Next.js apps. It installs Sass, rewrites key entry files with curated layouts, downloads optional assets, and can even drop in a Three.js scene when requested.
 
-## Features
+## What You Get
 
-- Prompts for app name, framework, package manager, git init, and optional 3D stack
-- Uses Vite to scaffold React/Preact apps or a minimal vanilla setup
-- Installs Sass and wires a starter `styles.scss`
-- Optional 3D setup with `three`, `@react-three/fiber`, and `@react-three/drei`
- - Next.js presets with Sass-based hero layout and optional asset downloading via a manifest
+- Guided prompts for app name, framework (React via Vite or Next.js), language, package manager, Git init, and optional 3D setup.
+- Vite React projects: deletes default CSS, rewrites `App.(t|j)sx`, `App.module.scss`, `main.(t|j)sx`, `styles.scss`, and `index.html` with SassWave-ready markup + branding.
+- Next.js projects: runs `create-next-app` with the right flags, removes Tailwind/PostCSS boilerplate, and rebuilds `layout.*`, `page.*`, `globals.scss`, and `page.module.scss` using SassWave defaults.
+- Asset manifest integration: ship favicons, fonts, and hero artwork by editing `assets-manifest.json`.
+- Optional React 3D mode that installs `three`, `@react-three/fiber`, `@react-three/drei`, and drops in a starter `ThreeScene`.
+- Automatic `npm run dev` / `bun dev` launch when scaffolding finishes.
 
-## Install (local dev)
+## Install & Run
 
-```bash
-npm install
-npm run dev
-```
-
-## Install globally (for real use)
-
-From this folder:
+### Via npm (recommended)
 
 ```bash
-npm install -g .
-```
-
-Then run:
-
-```bash
+npm install -g sasswave
 sasswave-create
 ```
 
-Follow the prompts to generate a new project.
+### One-off (npx)
 
-## Downloading custom assets automatically
-
-Place the URLs you want to pull into generated projects inside `assets-manifest.json` at the root of this CLI. Each entry looks like:
-
-```json
-[
-	{
-		"url": "https://example.com/assets/favicon.svg",
-		"dest": "public/favicon.svg",
-		"frameworks": ["next.js"]
-	}
-]
+```bash
+npx sasswave-create
 ```
 
-- `url`: Remote asset to download.
-- `dest`: Path inside the generated project (relative to its root).
-- `frameworks` / `framework`: Optional filter so you only download specific assets for e.g. `next.js` vs `react`.
-
-By default the manifest is empty—copy `assets-manifest.example.json` to `assets-manifest.json` and edit it with your own files to enable the feature.
+Follow the prompts and the CLI will scaffold the requested stack inside the folder you provide.
