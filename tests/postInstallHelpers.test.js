@@ -5,8 +5,11 @@ import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+process.env.CI_SKIP_THREE_INSTALL = 'true';
+
 import { setupReactProject } from '../src/lib/reactSetup.js';
 import { setupNextProject } from '../src/lib/nextSetup.js';
+import { setupReactThree } from '../src/lib/reactThree.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -130,6 +133,46 @@ test('setupNextProject removes Tailwind and rebuilds layout', { concurrency: fal
             assert.ok(layoutContent.includes('export const metadata'), 'layout.tsx should define metadata');
             assert.equal(globalsExists, true, 'globals.scss should be created');
             assert.equal(tailwindConfigExists, false, 'tailwind.config.js should be removed');
+        });
+    });
+});
+
+test('setupReactThree injects ThreeScene into React template', { concurrency: false }, async () => {
+    await withManifestDisabled(async () => {
+        await withTempDir('sasswave-react-3d-', async (dir) => {
+            await createReactFixture(dir);
+
+            const answers = { framework: 'react', language: 'TypeScript', pkgManager: 'npm', want3d: true };
+            await setupReactProject(answers, dir);
+            await setupReactThree(answers, dir);
+
+            const sceneExists = await fs.pathExists(path.join(dir, 'src', 'ThreeScene.tsx'));
+            const appContent = await fs.readFile(path.join(dir, 'src', 'App.tsx'), 'utf8');
+            const moduleContent = await fs.readFile(path.join(dir, 'src', 'App.module.scss'), 'utf8');
+
+            assert.equal(sceneExists, true, 'ThreeScene.tsx should exist');
+            assert.ok(appContent.includes("<ThreeScene />"), 'App.tsx should render ThreeScene');
+            assert.ok(moduleContent.includes('.scene'), 'App.module.scss should include .scene styles');
+        });
+    });
+});
+
+test('setupReactThree injects ThreeScene into Next.js template', { concurrency: false }, async () => {
+    await withManifestDisabled(async () => {
+        await withTempDir('sasswave-next-3d-', async (dir) => {
+            await createNextFixture(dir);
+
+            const answers = { framework: 'next.js', language: 'TypeScript', pkgManager: 'npm', want3d: true };
+            await setupNextProject(answers, dir);
+            await setupReactThree(answers, dir);
+
+            const sceneExists = await fs.pathExists(path.join(dir, 'src', 'app', 'ThreeScene.tsx'));
+            const pageContent = await fs.readFile(path.join(dir, 'src', 'app', 'page.tsx'), 'utf8');
+            const moduleContent = await fs.readFile(path.join(dir, 'src', 'app', 'page.module.scss'), 'utf8');
+
+            assert.equal(sceneExists, true, 'ThreeScene.tsx should exist in app directory');
+            assert.ok(pageContent.includes("<ThreeScene />"), 'page.tsx should render ThreeScene');
+            assert.ok(moduleContent.includes('.scene'), 'page.module.scss should include .scene styles');
         });
     });
 });
