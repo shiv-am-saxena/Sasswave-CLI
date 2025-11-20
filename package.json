@@ -1,6 +1,6 @@
 {
   "name": "sasswave",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Zero-config CLI to scaffold SassWave-ready React or Next.js apps.",
   "private": false,
   "type": "module",
